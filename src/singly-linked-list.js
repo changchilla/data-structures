@@ -31,7 +31,14 @@
   };
 
   exports.SinglyLinkedList.prototype.remove = function(node) {
+    if(!node){
+      return false;
+    }
     var temp = this.first;
+    if(temp === node) {
+      this.first = this.first.next;
+      return true;
+    }
     if (!temp) {
       throw new Error('No node to remove');
     }
@@ -39,6 +46,17 @@
       temp = temp.next;
     }
     temp.next = temp.next.next;
+    if(node === this.last) {
+      this.last = temp;
+    }
+    return true;
+  };
+
+  exports.SinglyLinkedList.prototype.removeHead = function() {
+    if(!this.first){
+      throw new Error('No node to remove');
+    }
+    this.first = this.first.next;
   };
 
   exports.SinglyLinkedList.prototype.insertAfter = function(data, nodeToInsertAfter) {
@@ -56,8 +74,22 @@
       this.last = newNode;
     }
   };
-
-  // find the kth to last element of a linked list
+  
+  exports.SinglyLinkedList.prototype.findMToLastElement = function(m) {
+    var current = this.first;
+    for(var i=0; i<m; i++){
+     if(current.next){
+       current = current.next;
+     }
+    }
+    var mBehind = this.first;
+    while(current.next){
+      current = current.next;
+      mBehind = mBehind.next;
+    }
+    return mBehind;
+  };
+  // more inefficient than above
   exports.SinglyLinkedList.prototype.findElementFromEnd = function(index) {
     if(this.first === null) {
       return null;
@@ -72,7 +104,7 @@
       return null;
     }
     return stack[stack.length - index];
-  }
+  };
   
   exports.SinglyLinkedList.prototype.deleteStack = function(){
     
