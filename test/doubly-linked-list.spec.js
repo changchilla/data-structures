@@ -60,4 +60,55 @@ describe('Linked List', function() {
     expect(linkedList.first.data).to.equal(1);
     expect(linkedList.first.next).to.not.exist;
   });
+
+  it('should add a child to a node of a doubly linked list', function() {
+    var firstLevelLinkedList = new LinkedList();
+    firstLevelLinkedList.push(1);
+    firstLevelLinkedList.push(2);
+    firstLevelLinkedList.push(3);
+    var secondLevelLinkedList = new LinkedList();
+    secondLevelLinkedList.push(4);
+    secondLevelLinkedList.push(5);
+
+    firstLevelLinkedList.addChild(secondLevelLinkedList, firstLevelLinkedList.first);
+    firstLevelLinkedList.flatten();
+    expect(firstLevelLinkedList.first.data).to.equal(1);
+    expect(firstLevelLinkedList.last.data).to.equal(5);
+  });
+
+  it('should flatten a multilevel doubly linked list', function() {
+    var firstLevelLinkedList = new LinkedList();
+    firstLevelLinkedList.push(1);
+    firstLevelLinkedList.push(2);
+    firstLevelLinkedList.push(3);
+    var secondLevelLinkedList = new LinkedList();
+    secondLevelLinkedList.push(4);
+    secondLevelLinkedList.push(5);
+    firstLevelLinkedList.addChild(secondLevelLinkedList, firstLevelLinkedList.last);
+    firstLevelLinkedList.flatten();
+    expect(firstLevelLinkedList.first.data).to.equal(1);
+    expect(firstLevelLinkedList.last.data).to.equal(5);
+  });
+
+  it('should unflatten a flattened linked list', function() {
+    var firstLevelLinkedList = new LinkedList();
+    firstLevelLinkedList.push(1);
+    firstLevelLinkedList.push(2);
+    firstLevelLinkedList.push(3);
+    var secondLevelLinkedList = new LinkedList();
+    secondLevelLinkedList.push(4);
+    secondLevelLinkedList.push(5);
+    var secondLevelLinkedList2 = new LinkedList();
+    secondLevelLinkedList2.push(6);
+    secondLevelLinkedList2.push(7);
+
+    firstLevelLinkedList.addChild(secondLevelLinkedList, firstLevelLinkedList.last);
+    firstLevelLinkedList.addChild(secondLevelLinkedList2, firstLevelLinkedList.first.next);
+    firstLevelLinkedList.flatten();
+    expect(firstLevelLinkedList.first.data).to.equal(1);
+    expect(firstLevelLinkedList.last.data).to.equal(5);
+    firstLevelLinkedList.unflatten();
+    expect(firstLevelLinkedList.first.data).to.equal(1);
+    expect(firstLevelLinkedList.last.data).to.equal(3);
+  });
 });
